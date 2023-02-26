@@ -1,66 +1,57 @@
-import React, { useState } from "react";
-import axios from "axios";
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+import React from "react";
+import { Container } from "react-bootstrap";
 
-  const handleSubmit = (event) => {
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import "../App.css";
+
+export default function Login() {
+  function handleSubmit(event) {
     event.preventDefault();
+    console.log(event.target[0].value);
+    console.log(event.target[1].value);
+    if (event.target[0].value === "" && event.target[1].value === "") {
+      alert("Please fill in username and password");
+    }
 
-    axios
-      .post("/api/login", { username, password })
-      .then((response) => {
-        console.log(response.data);
-        // Handle successful login
-      })
-      .catch((err) => {
-        setError("Incorrect username or password");
-      });
-  };
+    if (event.target[0].value !== "" && event.target[1].value === "") {
+      alert("Please fill in password");
+    }
 
+    if (event.target[0].value === "" && event.target[1].value !== "") {
+      alert("Please fill in username");
+    }
+  }
   return (
-    <div className="flex items-center justify-center h-screen">
-      <form
-        className="bg-white p-6 rounded-lg shadow-xl"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-lg font-medium mb-4">Login</h2>
-        <div className="mb-4">
-          <label className="block font-medium mb-2" htmlFor="username">
-            Username
-          </label>
-          <input
-            className="border border-gray-400 p-2 w-full"
-            type="text"
-            id="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-medium mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="border border-gray-400 p-2 w-full"
-            type="password"
-            id="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded mb-4">
-            {error}
-          </div>
-        )}
-        <button className="bg-indigo-500 text-white py-2 px-4 rounded-full hover:bg-indigo-600">
-          Submit
-        </button>
-      </form>
-    </div>
-  );
-};
+    <>
+      <Container className="Loginpage">
+        <Row>
+          <Col>
+            <form onSubmit={handleSubmit}>
+              <label>
+                username
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="username"
+                ></input>
+              </label>
 
-export default Login;
+              <label>
+                Password
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                ></input>
+              </label>
+
+              <button type="submit">Submit</button>
+            </form>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
+}
